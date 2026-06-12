@@ -1,0 +1,6 @@
+{
+  "name": "Goethe C1 AI Korrektor",
+  "description": "AI-powered writing assessment for Goethe-Zertifikat C1.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

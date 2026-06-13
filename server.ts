@@ -349,6 +349,73 @@ async function startServer() {
     }
   });
 
+  app.post("/api/upgrade-sentence", async (req, res) => {
+    try {
+      const { sentence, context, provider = "gemini", customApiKey } = req.body;
+
+      if (!sentence) {
+        return res.status(400).json({ error: "Missing sentence parameter." });
+      }
+
+      const prompt = `Du bist ein hochqualifizierter Prüfer für das Goethe-Zertifikat C1/C2.
+Bitte werte diesen einen Satz aus einer Musterlösung stilistisch, grammatikalisch und im Wortschatz auf ein noch eleganteres, treffenderes und prüfungsorientierteres Niveau auf ("C1+ / C2").
+
+Satz: "${sentence}"
+
+Gesamtkontext zur Orientierung (optional):
+"${context || '-'}"
+
+Mache genau EINEN besten Vorschlag und erkläre in 1-2 kurzen Sätzen, was daran besser ist.
+
+Nutze für die Ausgabe strikt dieses JSON-Format:
+{
+  "upgraded": "Der verbesserte Satz",
+  "explanation": "Kurze Erklärung"
+}`;
+
+      let resultText = "";
+
+      if (provider === "deepseek") {
+        if (!process.env.DEEPSEEK_API_KEY && !customApiKey) {
+          throw new Error("Missing DeepSeek API Key");
+        }
+        const dsClient = new OpenAI({
+          baseURL: 'https://api.deepseek.com',
+          apiKey: customApiKey || process.env.DEEPSEEK_API_KEY
+        });
+
+        const resp = await dsClient.chat.completions.create({
+          model: "deepseek-chat",
+          messages: [
+            {"role": "system", "content": "You are a German language expert."},
+            {"role": "user", "content": prompt}
+          ],
+          response_format: { type: "json_object" }
+        });
+        resultText = resp.choices[0].message.content || "{}";
+      } else {
+        const aiClient = customApiKey 
+            ? new GoogleGenAI({ apiKey: customApiKey, httpOptions: { headers: { 'User-Agent': 'aistudio-build' } } }) 
+            : ai; 
+
+        const resp = await aiClient.models.generateContent({
+          model: 'gemini-2.5-pro',
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+            temperature: 0.3,
+          }
+        });
+        resultText = resp.text() || "{}";
+      }
+
+      res.json(JSON.parse(resultText));
+    } catch (error: any) {
+      console.error("Upgrade error:", error);
+      res.status(500).json({ error: error.message || "Something went wrong during upgrade" });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

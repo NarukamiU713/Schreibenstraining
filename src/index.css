@@ -17,3 +17,31 @@
   .markdown-body blockquote { @apply border-l-4 border-slate-300 dark:border-[#333] pl-4 py-1 my-4 text-slate-600 dark:text-slate-400 italic bg-slate-50 dark:bg-[#111]; }
   .markdown-body strong { @apply font-semibold dark:text-white; }
 }
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 dark:bg-zinc-700 rounded-full border-2 border-transparent bg-clip-content;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400 dark:bg-zinc-600;
+  }
+  
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+  
+  /* dark scrollbar */
+  .dark * {
+    scrollbar-color: #3f3f46 transparent;
+  }
+}
+

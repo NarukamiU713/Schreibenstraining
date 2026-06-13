@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Loader2, CheckCircle2, ChevronRight, PenLine, FileText, BarChart3, Grip, X, Clock, Trash2, Settings, Moon, Sun, Copy, AlertTriangle } from 'lucide-react';
+import { Loader2, CheckCircle2, ChevronRight, PenLine, FileText, BarChart3, Grip, X, Clock, Trash2, Settings, Moon, Sun, Copy, AlertTriangle, Sparkles } from 'lucide-react';
 import { BewertungResponse, Korrektur, HistoryItem } from './types';
+import { InteractiveMusterloesung } from './InteractiveMusterloesung';
 
 function getHighlightedTextChunks(text: string, korrekturen: Korrektur[]) {
   const matches: { start: number; end: number; korr: Korrektur }[] = [];
@@ -569,14 +570,21 @@ export default function App() {
                   <FileText className="w-4 h-4 mr-2" />
                   KI Musterlösung (C1-Niveau)
                 </h2>
-                <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded font-medium">Referenz</span>
-              </div>
-              <div className="p-6 md:p-8 font-serif leading-relaxed text-lg text-slate-800 text-justify overflow-y-auto">
-                <div className="markdown-body prose prose-slate max-w-none">
-                  <ReactMarkdown>
-                    {result.musterloesung}
-                  </ReactMarkdown>
+                <div className="flex gap-2">
+                  <span className="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800/50 rounded font-medium flex items-center">
+                    <Sparkles className="w-3 h-3 mr-1" /> Satzweise verfeinern
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/50 rounded font-medium">Referenz</span>
                 </div>
+              </div>
+              <div className="p-6 md:p-8 font-serif leading-relaxed text-lg text-justify overflow-y-auto min-h-[400px]">
+                <InteractiveMusterloesung 
+                  text={result.musterloesung} 
+                  onUpdateText={(newText) => setResult({ ...result, musterloesung: newText })}
+                  provider={provider}
+                  customGeminiKey={customGeminiKey}
+                  customDeepseekKey={customDeepseekKey}
+                />
               </div>
             </div>
           </div>

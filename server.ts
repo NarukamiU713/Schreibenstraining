@@ -207,11 +207,21 @@ async function startServer() {
         Bewerte ausschließlich auf Deutsch und orientiere dich am Bewertungsraster des Goethe-Zertifikats C1.
         
         Arbeitsablauf:
-        1. Prüfungsteil: Teil ${teil} (Teil 1: max 60 Punkte, Teil 2: max 40 Punkte).
+        1. Prüfungsteil: Teil ${teil} (Teil 1: max 60 Punkte, Teil 2: max 40 Punkte). Setze maxPunkte entsprechend auf 60 oder 40.
         2. Prüfe die Aufgabenerfüllung. Falls Thema oder Umfang (weniger als 50%) verfehlt sind, setze "Aufgabenerfüllung" auf E und Gesamtpunkte auf 0.
         3. Bewerte Aufgabenerfüllung, Kohärenz, Wortschatz und Strukturen jeweils auf Stufe A, B, C, D oder E und begründe mit Textbelegen.
+           Nutze für die Punkte exakt folgende Werte je nach Teil:
+           Teil 1:
+           - Aufgabenerfüllung (max 14): A=14, B=10.5, C=7, D=3.5, E=0.
+           - Kohärenz (max 14): A=14, B=10.5, C=7, D=3.5, E=0.
+           - Wortschatz (max 16): A=16, B=12, C=8, D=4, E=0.
+           - Strukturen (max 16): A=16, B=12, C=8, D=4, E=0.
+           Teil 2:
+           - Alle 4 Kriterien (max 10 jeweils): A=10, B=7.5, C=5, D=2.5, E=0.
+           Setze in der JSON-Ausgabe bei jedem Kriterium das Feld "max" auf den jeweiligen Max-Wert.
+           Die "gesamtpunkte" sind die exakte mathematische Summe der 4 Kriterien-Punkte.
         4. WICHTIG: Bewerte wirklich jeden einzelnen Satz des Schülertexts. Jeder Satz muss eine Korrektur haben, und wenn es nur Fehlerkorrekturen oder auch kleine stilistische Verbesserungen sind! Klassifiziere "schweregrad" als "minor" (kleine Fehler/Verbesserungen) oder "major" (große/viele Fehler in diesem Satz). Gib alle in das Array "korrekturen".
-        5. Erstelle eine C1-konforme Musterlösung als Referenz.
+        5. Erstelle eine individuell auf den Text des Schülers abgestimmte Musterlösung (die absolute "Best-Practice" C1-Version seines eigenen Textes!). Diese soll die Gedanken des Schülers aufgreifen und unter strenger Berücksichtigung der Goethe-Zertifikat C1 Bewertungskriterien optimal, präzise und elegant formulieren, anstatt nur ein allgemeines, losgelöstes Beispiel zu präsentieren.
 
         Aufgabenstellung (optional, falls vorhanden berücksichtigen):
         ${taskPrompt || "Keine spezifische Aufgabenstellung übergeben. Bewerte allgemeine C1-Sprachrichtigkeit und Textsorte entsprechend Teil " + teil + "."}
@@ -275,7 +285,6 @@ async function startServer() {
       }
 
       const validCount = results.length;
-      // Nehmen wir das Textfeedback und die Struktur vom ersten Ergebnis
       const finalResult = { ...results[0] };
     
       let totalGesamt = 0;
@@ -292,11 +301,44 @@ async function startServer() {
         totalStrukturen += res.kriterien?.strukturen?.punkte || 0;
       }
 
-      finalResult.gesamtpunkte = Math.round(totalGesamt / validCount);
-      if (finalResult.kriterien?.aufgabenerfullung) finalResult.kriterien.aufgabenerfullung.punkte = Math.round(totalAufgabe / validCount);
-      if (finalResult.kriterien?.koherenz) finalResult.kriterien.koherenz.punkte = Math.round(totalKohaerenz / validCount);
-      if (finalResult.kriterien?.wortschatz) finalResult.kriterien.wortschatz.punkte = Math.round(totalWortschatz / validCount);
-      if (finalResult.kriterien?.strukturen) finalResult.kriterien.strukturen.punkte = Math.round(totalStrukturen / validCount);
+      function getStufe(punkte: number, max: number): string {
+        const ratio = punkte / max;
+        if (ratio >= 0.875) return 'A';
+        if (ratio >= 0.625) return 'B';
+        if (ratio >= 0.375) return 'C';
+        if (ratio >= 0.125) return 'D';
+        return 'E';
+      }
+
+      const roundToHalf = (num: number) => Math.round(num * 2) / 2;
+
+      finalResult.gesamtpunkte = roundToHalf(totalGesamt / validCount);
+      
+      const maxAufgabe = teil === 1 ? 14 : 10;
+      const maxKoh = teil === 1 ? 14 : 10;
+      const maxWort = teil === 1 ? 16 : 10;
+      const maxStruk = teil === 1 ? 16 : 10;
+
+      if (finalResult.kriterien?.aufgabenerfullung) {
+        finalResult.kriterien.aufgabenerfullung.punkte = roundToHalf(totalAufgabe / validCount);
+        finalResult.kriterien.aufgabenerfullung.max = maxAufgabe;
+        finalResult.kriterien.aufgabenerfullung.stufe = getStufe(finalResult.kriterien.aufgabenerfullung.punkte, maxAufgabe);
+      }
+      if (finalResult.kriterien?.koherenz) {
+        finalResult.kriterien.koherenz.punkte = roundToHalf(totalKohaerenz / validCount);
+        finalResult.kriterien.koherenz.max = maxKoh;
+        finalResult.kriterien.koherenz.stufe = getStufe(finalResult.kriterien.koherenz.punkte, maxKoh);
+      }
+      if (finalResult.kriterien?.wortschatz) {
+        finalResult.kriterien.wortschatz.punkte = roundToHalf(totalWortschatz / validCount);
+        finalResult.kriterien.wortschatz.max = maxWort;
+        finalResult.kriterien.wortschatz.stufe = getStufe(finalResult.kriterien.wortschatz.punkte, maxWort);
+      }
+      if (finalResult.kriterien?.strukturen) {
+        finalResult.kriterien.strukturen.punkte = roundToHalf(totalStrukturen / validCount);
+        finalResult.kriterien.strukturen.max = maxStruk;
+        finalResult.kriterien.strukturen.stufe = getStufe(finalResult.kriterien.strukturen.punkte, maxStruk);
+      }
       
       finalResult.allScores = results.map((r: any) => r.gesamtpunkte || 0);
 

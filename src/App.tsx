@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Loader2, CheckCircle2, ChevronRight, PenLine, FileText, BarChart3, Grip, X, Clock, Trash2, Settings, Moon, Sun, Copy } from 'lucide-react';
+import { Loader2, CheckCircle2, ChevronRight, PenLine, FileText, BarChart3, Grip, X, Clock, Trash2, Settings, Moon, Sun, Copy, AlertTriangle } from 'lucide-react';
 import { BewertungResponse, Korrektur, HistoryItem } from './types';
 
 function getHighlightedTextChunks(text: string, korrekturen: Korrektur[]) {
@@ -217,21 +217,21 @@ export default function App() {
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-black text-slate-900 dark:text-slate-100 font-sans transition-colors duration-200">
       {/* Header */}
       <header className="h-20 flex items-center justify-end px-6 shrink-0 fixed top-0 w-full z-10 pointer-events-none transition-colors duration-200">
-        <div className="flex items-center space-x-2 text-sm font-medium bg-white dark:bg-[#111] text-slate-600 dark:text-slate-300 rounded-full px-3 py-2 shadow-sm border border-slate-200 dark:border-[#222] pointer-events-auto mt-2">
-          <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-[#222] transition">
+        <div className="flex items-center space-x-2 text-sm font-medium bg-white dark:bg-[#0a0a0a] text-slate-600 dark:text-slate-300 rounded-full px-3 py-2 shadow-sm border border-slate-200 dark:border-white/[0.06] pointer-events-auto mt-2">
+          <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition">
             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button onClick={() => setShowSettings(true)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-[#222] transition">
+          <button onClick={() => setShowSettings(true)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition">
             <Settings size={18} />
           </button>
-          <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center border-2 border-white dark:border-[#222] ml-1 shadow-sm">JS</div>
+          <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center border-2 border-white dark:border-white/[0.06] ml-1 shadow-sm">JS</div>
         </div>
       </header>
 
       {/* Settings Modal */}
       {showSettings && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-[#111] rounded-xl max-w-md w-full p-6 shadow-xl relative animate-in fade-in zoom-in-95">
+          <div className="bg-white dark:bg-[#0a0a0a] rounded-xl max-w-md w-full p-6 shadow-xl relative animate-in fade-in zoom-in-95">
             <button onClick={() => setShowSettings(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
               <X size={20} />
             </button>
@@ -244,22 +244,22 @@ export default function App() {
               <div>
                 <label className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2">KI-Modell ausw\u00e4hlen</label>
                 <div className="flex gap-2">
-                  <button onClick={() => setProvider('gemini')} className={`flex-1 py-2 rounded-lg border-2 font-semibold transition ${provider === 'gemini' ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : 'border-slate-200 text-slate-600 dark:border-[#222] dark:text-slate-400'}`}>Gemini 2.5</button>
-                  <button onClick={() => setProvider('deepseek')} className={`flex-1 py-2 rounded-lg border-2 font-semibold transition ${provider === 'deepseek' ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : 'border-slate-200 text-slate-600 dark:border-[#222] dark:text-slate-400'}`}>DeepSeek</button>
+                  <button onClick={() => setProvider('gemini')} className={`flex-1 py-2 rounded-lg border-2 font-semibold transition ${provider === 'gemini' ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : 'border-slate-200 text-slate-600 dark:border-white/[0.06] dark:text-slate-400'}`}>Gemini 2.5</button>
+                  <button onClick={() => setProvider('deepseek')} className={`flex-1 py-2 rounded-lg border-2 font-semibold transition ${provider === 'deepseek' ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : 'border-slate-200 text-slate-600 dark:border-white/[0.06] dark:text-slate-400'}`}>DeepSeek</button>
                 </div>
               </div>
 
               {provider === 'gemini' && (
                 <div>
                   <label className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2">Gemini API Key (Optional)</label>
-                  <input type="password" value={customGeminiKey} onChange={(e) => setCustomGeminiKey(e.target.value)} className="w-full bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Lass leer für Standard-Key" />
+                  <input type="password" value={customGeminiKey} onChange={(e) => setCustomGeminiKey(e.target.value)} className="w-full bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Lass leer für Standard-Key" />
                 </div>
               )}
 
               {provider === 'deepseek' && (
                 <div>
                   <label className="block text-sm font-bold text-slate-600 dark:text-slate-300 mb-2">DeepSeek API Key</label>
-                  <input type="password" value={customDeepseekKey} onChange={(e) => setCustomDeepseekKey(e.target.value)} className="w-full bg-slate-50 dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="sk-..." />
+                  <input type="password" value={customDeepseekKey} onChange={(e) => setCustomDeepseekKey(e.target.value)} className="w-full bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="sk-..." />
                 </div>
               )}
             </div>
@@ -273,16 +273,16 @@ export default function App() {
         
         {/* Mode Switcher */}
         <div className="flex justify-center mb-10">
-           <div className="flex bg-slate-200/50 dark:bg-[#111] p-1 rounded-xl w-fit border border-slate-200 dark:border-[#222] shadow-sm">
-             <button onClick={() => setAppMode('evaluate')} className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${appMode === 'evaluate' ? 'bg-white dark:bg-[#222] text-blue-700 dark:text-blue-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>KI-Bewertung (Auto)</button>
-             <button onClick={() => setAppMode('compare')} className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${appMode === 'compare' ? 'bg-white dark:bg-[#222] text-blue-700 dark:text-blue-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>Korrektur-Bericht (Manuell)</button>
+           <div className="flex bg-slate-200/50 dark:bg-[#111111] p-1 rounded-xl w-fit border border-slate-200 dark:border-white/[0.06] shadow-sm">
+             <button onClick={() => setAppMode('evaluate')} className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${appMode === 'evaluate' ? 'bg-white dark:bg-[#1a1a1a] text-blue-700 dark:text-blue-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>KI-Bewertung (Auto)</button>
+             <button onClick={() => setAppMode('compare')} className={`px-5 py-2.5 rounded-lg text-sm font-bold transition-all ${appMode === 'compare' ? 'bg-white dark:bg-[#1a1a1a] text-blue-700 dark:text-blue-300 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}>Korrektur-Bericht (Manuell)</button>
            </div>
         </div>
 
         {appMode === 'evaluate' && (
           <div className="animate-in fade-in duration-300">
             {/* Navigation Tabs */}
-            <div className="flex flex-wrap gap-2 bg-slate-200/50 dark:bg-[#111] p-1 rounded-xl w-fit mx-auto mb-8">
+            <div className="flex flex-wrap gap-2 bg-slate-200/50 dark:bg-[#111111] p-1 rounded-xl w-fit mx-auto mb-8">
               <TabButton active={activeTab === 'input'} onClick={() => setActiveTab('input')} icon={<FileText size={18} />} label="Eingabe" />
               <TabButton disabled={!result} active={activeTab === 'score'} onClick={() => setActiveTab('score')} icon={<BarChart3 size={18} />} label="Bewertung" />
               <TabButton disabled={!result} active={activeTab === 'corrections'} onClick={() => setActiveTab('corrections')} icon={<CheckCircle2 size={18} />} label="Korrekturen" />
@@ -293,17 +293,17 @@ export default function App() {
         {/* --- Tab 1: Input --- */}
         {activeTab === 'input' && (
           <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] p-6 sm:p-8">
+            <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] p-6 sm:p-8">
               
               {/* Teil Selector */}
               <div className="mb-6">
                 <label className="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">Prüfungsteil</label>
                 <div className="flex space-x-3">
-                  <button onClick={() => setTeil(1)} className={`flex-1 py-3 px-4 rounded-xl flex flex-col items-start border-2 transition-all ${teil === 1 ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-[#222] hover:border-slate-300 dark:hover:border-slate-600'}`}>
+                  <button onClick={() => setTeil(1)} className={`flex-1 py-3 px-4 rounded-xl flex flex-col items-start border-2 transition-all ${teil === 1 ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-white/[0.06] hover:border-slate-300 dark:hover:border-slate-600'}`}>
                     <span className={`font-semibold ${teil === 1 ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>Teil 1</span>
                     <span className="text-sm text-slate-500 dark:text-slate-400 mt-1">Umfangreicher Text, max 60 Punkte</span>
                   </button>
-                  <button onClick={() => setTeil(2)} className={`flex-1 py-3 px-4 rounded-xl flex flex-col items-start border-2 transition-all ${teil === 2 ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-[#222] hover:border-slate-300 dark:hover:border-slate-600'}`}>
+                  <button onClick={() => setTeil(2)} className={`flex-1 py-3 px-4 rounded-xl flex flex-col items-start border-2 transition-all ${teil === 2 ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-white/[0.06] hover:border-slate-300 dark:hover:border-slate-600'}`}>
                     <span className={`font-semibold ${teil === 2 ? 'text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300'}`}>Teil 2</span>
                     <span className="text-sm text-slate-500 dark:text-slate-400 mt-1">Stellungnahme, max 40 Punkte</span>
                   </button>
@@ -314,7 +314,7 @@ export default function App() {
               <div className="mb-6">
                 <label className="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">Aufgabenstellung (Optional)</label>
                 <textarea
-                  className="w-full bg-[#F8FAFC] dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y"
+                  className="w-full bg-[#F8FAFC] dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y"
                   rows={3}
                   placeholder="Füge hier die genaue Aufgabenstellung ein, damit sie bei der Bewertung berücksichtigt werden kann."
                   value={taskPrompt}
@@ -326,11 +326,27 @@ export default function App() {
               <div className="mb-6">
                 <label className="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">Dein Text</label>
                 <textarea
-                  className="w-full bg-[#F8FAFC] dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl p-4 font-serif focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[250px]"
+                  className="w-full bg-[#F8FAFC] dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-xl p-4 font-serif focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[250px]"
                   placeholder="Schreibe oder kopiere deinen Text hier hinein..."
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 />
+                <div className="mt-3 flex justify-between items-center text-sm">
+                  <span className="text-slate-500 dark:text-slate-400">
+                    Wörter: <span className="font-bold">{text.trim() ? text.trim().split(/\s+/).length : 0}</span>
+                  </span>
+                  {text.trim() && (() => {
+                    const wordCount = text.trim().split(/\s+/).length;
+                    if (teil === 1) {
+                      if (wordCount < 200) return <span className="text-orange-500 flex items-center gap-1"><AlertTriangle size={14} /> Zu kurz (ca. 200-250 Wörter erwartet)</span>;
+                      if (wordCount > 350) return <span className="text-orange-500 flex items-center gap-1"><AlertTriangle size={14} /> Evtl. zu lang (ca. 200-250 Wörter erwartet)</span>;
+                    } else {
+                      if (wordCount < 100) return <span className="text-orange-500 flex items-center gap-1"><AlertTriangle size={14} /> Zu kurz (ca. 100-150 Wörter erwartet)</span>;
+                      if (wordCount > 250) return <span className="text-orange-500 flex items-center gap-1"><AlertTriangle size={14} /> Evtl. zu lang (ca. 100-150 Wörter erwartet)</span>;
+                    }
+                    return <span className="text-green-500 flex items-center gap-1"><CheckCircle2 size={14} /> Optimaler Bereich</span>;
+                  })()}
+                </div>
               </div>
 
               {error && <div className="mb-4 p-4 rounded-lg bg-red-50 text-red-600 text-sm">{error}</div>}
@@ -358,7 +374,7 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
             <div className="lg:col-span-1 space-y-6">
               {/* Total Score Card */}
-              <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] p-8 text-center flex flex-col items-center justify-center min-h-[300px]">
+              <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] p-8 text-center flex flex-col items-center justify-center min-h-[300px]">
                 <h3 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6">Gesamtbewertung</h3>
                 <div className="relative flex items-center justify-center mb-8">
                   <svg className="w-40 h-40 transform -rotate-90">
@@ -376,11 +392,11 @@ export default function App() {
 
               {/* All Scores History */}
               {result.allScores && result.allScores.length > 0 && (
-                <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] p-5 flex flex-col items-center">
+                <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] p-5 flex flex-col items-center">
                   <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Einzelne KI-Durchläufe ({result.allScores.length}x)</h3>
                   <div className="flex gap-2 flex-wrap justify-center">
                     {result.allScores.map((score, idx) => (
-                      <div key={idx} className="bg-slate-50 dark:bg-[#0a0a0a] border border-slate-200 dark:border-[#222] px-3 py-1.5 rounded-lg text-sm font-bold text-blue-900 dark:text-blue-300 shadow-sm">
+                      <div key={idx} className="bg-slate-50 dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] px-3 py-1.5 rounded-lg text-sm font-bold text-blue-900 dark:text-blue-300 shadow-sm">
                         {score} <span className="text-slate-400 dark:text-slate-500 font-normal text-xs">/ {result.maxPunkte}</span>
                       </div>
                     ))}
@@ -389,7 +405,7 @@ export default function App() {
               )}
 
               {/* Urteil */}
-              <div className="bg-[#003056] dark:bg-[#111] text-white rounded-xl shadow-sm border border-transparent dark:border-[#222] p-6 relative overflow-hidden">
+              <div className="bg-[#003056] dark:bg-[#0a0a0a] text-white rounded-xl shadow-sm border border-transparent dark:border-white/[0.06] p-6 relative overflow-hidden">
                 <div className="absolute -right-4 -top-4 opacity-[0.03]">
                   <BarChart3 className="w-32 h-32" />
                 </div>
@@ -400,8 +416,8 @@ export default function App() {
 
             {/* Criteria Breakdown */}
             <div className="lg:col-span-2 space-y-4">
-              <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] overflow-hidden">
-                <div className="p-4 border-b border-slate-100 dark:border-[#222] flex justify-between items-center bg-slate-50 dark:bg-[#111]">
+              <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] overflow-hidden">
+                <div className="p-4 border-b border-slate-100 dark:border-white/[0.06] flex justify-between items-center bg-slate-50 dark:bg-[#111111]">
                   <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Detailbewertung nach C1-Kriterien</h2>
                 </div>
                 <div className="p-6 space-y-4">
@@ -422,8 +438,8 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column: Interactive Original Text */}
               <div className="lg:col-span-2 relative" id="text-container">
-                <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] overflow-hidden h-full">
-                  <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex justify-between tracking-wider">
+                <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] overflow-hidden h-full">
+                  <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex justify-between tracking-wider">
                     <span>Dein Text mit Korrekturen</span>
                     <span className="text-blue-600 dark:text-blue-400 font-bold bg-blue-100 dark:bg-blue-900/20 px-2 rounded-full">{result.korrekturen.length}</span>
                   </div>
@@ -442,7 +458,7 @@ export default function App() {
                                 setSuggestionTop(Math.max(0, spanRect.top - containerRect.top));
                               }
                             }}
-                            className={`cursor-pointer underline decoration-dotted decoration-2 underline-offset-4 transition-colors ${selectedKorrektur === chunk.korr ? 'bg-blue-100 dark:bg-blue-900/40 decoration-blue-600 text-blue-900 dark:text-blue-200' : (chunk.korr?.schweregrad === 'minor' ? 'decoration-yellow-400 hover:bg-slate-100 dark:hover:bg-[#222]' : 'decoration-red-400 hover:bg-slate-100 dark:hover:bg-[#222]')}`}
+                            className={`cursor-pointer underline decoration-dotted decoration-2 underline-offset-4 transition-colors ${selectedKorrektur === chunk.korr ? 'bg-blue-100 dark:bg-blue-900/40 decoration-blue-600 text-blue-900 dark:text-blue-200' : (chunk.korr?.schweregrad === 'minor' ? 'decoration-yellow-400 hover:bg-slate-100 dark:hover:bg-white/5' : 'decoration-red-400 hover:bg-slate-100 dark:hover:bg-white/5')}`}
                           >
                             {chunk.text}
                           </span>
@@ -461,25 +477,24 @@ export default function App() {
               <div className="lg:col-span-1 relative hidden lg:block h-full min-h-[300px]">
                 {selectedKorrektur ? (
                   <div 
-                    className="bg-white dark:bg-[#111] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden absolute w-full transition-all duration-300 z-10"
+                    className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden absolute w-full transition-all duration-300 z-10"
                     style={{ top: `${suggestionTop}px` }}
                   >
-                    <div className="p-3 bg-blue-50 dark:bg-[#111] border-b border-blue-100 dark:border-[#222] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase tracking-wider">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-white/[0.06] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase tracking-wider">
                       <span>Korrekturvorschlag</span>
-                      <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bg-white dark:bg-[#111] rounded-full p-1 shadow-sm border border-slate-100 dark:border-[#222]">
+                      <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bg-white dark:bg-[#0a0a0a] rounded-full p-1 shadow-sm border border-slate-100 dark:border-white/[0.06]">
                         <X size={14} />
                       </button>
                     </div>
                     <div className="p-5">
-                      <p className="text-[14px] text-slate-500 dark:text-slate-400 line-through decoration-red-400 mb-3">{selectedKorrektur.original}</p>
-                      <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-[#222]">{selectedKorrektur.vorschlag}</p>
-                      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#0a0a0a] rounded border border-slate-100 dark:border-[#222] italic">
+                      <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-white/[0.06]">{selectedKorrektur.vorschlag}</p>
+                      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#111111] rounded border border-slate-100 dark:border-white/[0.06] italic">
                         {selectedKorrektur.erklaerung}
                       </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-transparent rounded-xl border-2 border-dashed border-slate-200 dark:border-[#222] p-8 text-center text-slate-400 dark:text-slate-500 text-sm sticky top-24">
+                  <div className="bg-transparent rounded-xl border-2 border-dashed border-slate-200 dark:border-white/[0.06] p-8 text-center text-slate-400 dark:text-slate-500 text-sm sticky top-24">
                     Klicke auf die unterstrichenen Textstellen im Text links, um die Korrekturvorschläge und Erklärungen im Detail zu sehen.
                   </div>
                 )}
@@ -488,17 +503,16 @@ export default function App() {
               {/* Mobile overlay for selected correction */}
               <div className="lg:hidden">
                  {selectedKorrektur && (
-                    <div className="bg-white dark:bg-[#111] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden mb-6">
-                      <div className="p-3 bg-blue-50 dark:bg-[#111] border-b border-blue-100 dark:border-[#222] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase">
+                    <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden mb-6">
+                      <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-white/[0.06] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase">
                         <span>Korrekturvorschlag</span>
                         <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                           <X size={16} />
                         </button>
                       </div>
                       <div className="p-5">
-                        <p className="text-[14px] text-slate-500 dark:text-slate-400 line-through decoration-red-400 mb-3">{selectedKorrektur.original}</p>
-                        <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-[#222]">{selectedKorrektur.vorschlag}</p>
-                        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#0a0a0a] rounded border border-slate-100 dark:border-[#222] italic">
+                        <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-white/[0.06]">{selectedKorrektur.vorschlag}</p>
+                        <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#111111] rounded border border-slate-100 dark:border-white/[0.06] italic">
                           {selectedKorrektur.erklaerung}
                         </p>
                       </div>
@@ -509,8 +523,8 @@ export default function App() {
 
             {/* Bottom Section: Feedback Lists */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-                <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
+              <div className="bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm">
+                <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
                   <span>Wichtigste Verbesserungen</span>
                   <span className="text-yellow-600 dark:text-yellow-500 font-bold bg-yellow-50 dark:bg-yellow-900/30 px-2 rounded-full">{result.verbesserungen.length}</span>
                 </div>
@@ -526,8 +540,8 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-                <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
+              <div className="bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm">
+                <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
                   <span>Stärken</span>
                   <span className="text-green-600 dark:text-green-500 font-bold bg-green-50 dark:bg-green-900/30 px-2 rounded-full">{result.staerken.length}</span>
                 </div>
@@ -549,8 +563,8 @@ export default function App() {
         {/* --- Tab 4: Sample --- */}
         {activeTab === 'sample' && result && (
           <div className="max-w-4xl mx-auto animate-in fade-in duration-500">
-            <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] overflow-hidden">
-              <div className="p-4 border-b border-slate-100 dark:border-[#222] flex justify-between items-center bg-slate-50 dark:bg-[#111]">
+            <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] overflow-hidden">
+              <div className="p-4 border-b border-slate-100 dark:border-white/[0.06] flex justify-between items-center bg-slate-50 dark:bg-[#111111]">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center">
                   <FileText className="w-4 h-4 mr-2" />
                   KI Musterlösung (C1-Niveau)
@@ -571,8 +585,8 @@ export default function App() {
         {/* --- Tab 5: History --- */}
         {activeTab === 'history' && (
           <div className="max-w-4xl mx-auto animate-in fade-in duration-500">
-            <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] overflow-hidden">
-              <div className="p-4 border-b border-slate-100 dark:border-[#222] flex justify-between items-center bg-slate-50 dark:bg-[#111]">
+            <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] overflow-hidden">
+              <div className="p-4 border-b border-slate-100 dark:border-white/[0.06] flex justify-between items-center bg-slate-50 dark:bg-[#111111]">
                 <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
                   Bisherige Bewertungen
@@ -599,12 +613,12 @@ export default function App() {
                     <p>Noch keine Bewertungen vorhanden.</p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-slate-100 dark:divide-[#222]">
+                  <div className="divide-y divide-slate-100 dark:divide-white/10">
                     {history.map((h) => (
-                      <div key={h.id} className="p-6 hover:bg-slate-50 dark:hover:bg-[#222] transition-colors flex justify-between items-start">
+                      <div key={h.id} className="p-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors flex justify-between items-start">
                         <div className="flex-1 mr-4">
                           <div className="flex items-center gap-3 justify-start mb-2">
-                            <span className="text-xs font-semibold px-2 py-1 bg-slate-100 dark:bg-[#222] text-slate-600 dark:text-slate-300 rounded">
+                            <span className="text-xs font-semibold px-2 py-1 bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-slate-300 rounded">
                               Teil {h.teil}
                             </span>
                             <span className="text-xs text-slate-400">{h.date}</span>
@@ -615,18 +629,33 @@ export default function App() {
                             <span className="text-sm text-slate-500 dark:text-slate-400">Urteil: {h.result.gesamturteil}</span>
                           </div>
                         </div>
-                        <button 
-                          className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold rounded-lg transition shrink-0 mt-1"
-                          onClick={() => {
-                            setText(h.text);
-                            setTaskPrompt(h.taskPrompt || '');
-                            setTeil(h.teil);
-                            setResult(h.result);
-                            setActiveTab('score');
-                          }}
-                        >
-                          Ansehen
-                        </button>
+                        <div className="flex gap-2 shrink-0 mt-1">
+                          <button 
+                            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold rounded-lg transition"
+                            onClick={() => {
+                              setText(h.text);
+                              setTaskPrompt(h.taskPrompt || '');
+                              setTeil(h.teil);
+                              setResult(h.result);
+                              setActiveTab('score');
+                            }}
+                          >
+                            Ansehen
+                          </button>
+                          <button 
+                            className="px-3 py-2 bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-lg transition"
+                            title="Bewertung löschen"
+                            onClick={() => {
+                              if (window.confirm("Diesen Eintrag löschen?")) {
+                                const newHistory = history.filter(item => item.id !== h.id);
+                                setHistory(newHistory);
+                                localStorage.setItem('evalHistory', JSON.stringify(newHistory));
+                              }
+                            }}
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -641,7 +670,7 @@ export default function App() {
         {appMode === 'compare' && (
           <div className="animate-in fade-in duration-300">
              {/* Compare Navigation Tabs */}
-             <div className="flex flex-wrap gap-2 bg-slate-200/50 dark:bg-[#111] p-1 rounded-xl w-fit mx-auto mb-8">
+             <div className="flex flex-wrap gap-2 bg-slate-200/50 dark:bg-[#111111] p-1 rounded-xl w-fit mx-auto mb-8">
                <TabButton active={activeCompareTab === 'input'} onClick={() => setActiveCompareTab('input')} icon={<FileText size={18} />} label="Texte eingeben" />
                <TabButton disabled={!compareResult} active={activeCompareTab === 'report'} onClick={() => setActiveCompareTab('report')} icon={<CheckCircle2 size={18} />} label="Korrektur-Bericht" />
                <TabButton active={activeCompareTab === 'history'} onClick={() => setActiveCompareTab('history')} icon={<Clock size={18} />} label="Verlauf" />
@@ -650,12 +679,12 @@ export default function App() {
              {/* Tab: Input */}
              {activeCompareTab === 'input' && (
                <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
-                  <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] p-6 sm:p-8 space-y-6">
+                  <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] p-6 sm:p-8 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">Originaler Text</label>
                         <textarea
-                          className="w-full bg-[#F8FAFC] dark:bg-black border border-slate-200 dark:border-[#222] rounded-xl p-4 font-serif text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[350px]"
+                          className="w-full bg-[#F8FAFC] dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-xl p-4 font-serif text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[350px]"
                           placeholder="Füge hier den originalen, fehlerhaften Text ein..."
                           value={compareOriginal}
                           onChange={(e) => setCompareOriginal(e.target.value)}
@@ -666,7 +695,7 @@ export default function App() {
                           Korrigierter Text / KI-Feedback
                         </label>
                         <textarea
-                          className="w-full bg-[#F8FAFC] dark:bg-black border border-slate-200 dark:border-[#222] rounded-xl p-4 font-serif text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[350px]"
+                          className="w-full bg-[#F8FAFC] dark:bg-[#111111] border border-slate-200 dark:border-white/[0.06] rounded-xl p-4 font-serif text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-y min-h-[350px]"
                           placeholder="Füge hier die korrigierte Version oder das Bewertungs-Feedback von anderen KIs ein..."
                           value={compareModified}
                           onChange={(e) => setCompareModified(e.target.value)}
@@ -691,7 +720,7 @@ export default function App() {
 
              {/* Tab: Report */}
              {activeCompareTab === 'report' && compareResult && (
-                <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
+                <div className="space-y-8 animate-in fade-in duration-500">
                   <div className="flex justify-end">
                     <button 
                       onClick={handleCopyReport}
@@ -704,8 +733,8 @@ export default function App() {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                     {/* Left Column: Interactive Original Text */}
                     <div className="lg:col-span-2 relative" id="compare-text-container">
-                      <div className="bg-white dark:bg-[#111] rounded-xl shadow-sm border border-slate-200 dark:border-[#222] overflow-hidden h-full">
-                        <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex justify-between tracking-wider">
+                      <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-sm border border-slate-200 dark:border-white/[0.06] overflow-hidden h-full">
+                        <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex justify-between tracking-wider">
                           <span>Dein Text mit Korrekturen</span>
                           <span className="text-blue-600 dark:text-blue-400 font-bold bg-blue-100 dark:bg-blue-900/20 px-2 rounded-full">{compareResult.korrekturen.length}</span>
                         </div>
@@ -724,7 +753,7 @@ export default function App() {
                                       setSuggestionTop(Math.max(0, spanRect.top - containerRect.top));
                                     }
                                   }}
-                                  className={`cursor-pointer underline decoration-dotted decoration-2 underline-offset-4 transition-colors ${selectedKorrektur === chunk.korr ? 'bg-blue-100 dark:bg-blue-900/40 decoration-blue-600 text-blue-900 dark:text-blue-200' : (chunk.korr?.schweregrad === 'minor' ? 'decoration-yellow-400 hover:bg-slate-100 dark:hover:bg-[#222]' : 'decoration-red-400 hover:bg-slate-100 dark:hover:bg-[#222]')}`}
+                                  className={`cursor-pointer underline decoration-dotted decoration-2 underline-offset-4 transition-colors ${selectedKorrektur === chunk.korr ? 'bg-blue-100 dark:bg-blue-900/40 decoration-blue-600 text-blue-900 dark:text-blue-200' : (chunk.korr?.schweregrad === 'minor' ? 'decoration-yellow-400 hover:bg-slate-100 dark:hover:bg-white/5' : 'decoration-red-400 hover:bg-slate-100 dark:hover:bg-white/5')}`}
                                 >
                                   {chunk.text}
                                 </span>
@@ -743,25 +772,24 @@ export default function App() {
                     <div className="lg:col-span-1 relative hidden lg:block h-full min-h-[300px]">
                       {selectedKorrektur ? (
                         <div 
-                          className="bg-white dark:bg-[#111] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden absolute w-full transition-all duration-300 z-10"
+                          className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden absolute w-full transition-all duration-300 z-10"
                           style={{ top: `${suggestionTop}px` }}
                         >
-                          <div className="p-3 bg-blue-50 dark:bg-[#111] border-b border-blue-100 dark:border-[#222] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase tracking-wider">
+                          <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-white/[0.06] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase tracking-wider">
                             <span>Korrekturvorschlag</span>
-                            <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bg-white dark:bg-[#111] rounded-full p-1 shadow-sm border border-slate-100 dark:border-[#222]">
+                            <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bg-white dark:bg-[#0a0a0a] rounded-full p-1 shadow-sm border border-slate-100 dark:border-white/[0.06]">
                               <X size={14} />
                             </button>
                           </div>
                           <div className="p-5">
-                            <p className="text-[14px] text-slate-500 dark:text-slate-400 line-through decoration-red-400 mb-3">{selectedKorrektur.original}</p>
-                            <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-[#222]">{selectedKorrektur.vorschlag}</p>
-                            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#0a0a0a] rounded border border-slate-100 dark:border-[#222] italic">
+                            <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-white/[0.06]">{selectedKorrektur.vorschlag}</p>
+                            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#111111] rounded border border-slate-100 dark:border-white/[0.06] italic">
                               {selectedKorrektur.erklaerung}
                             </p>
                           </div>
                         </div>
                       ) : (
-                        <div className="bg-transparent rounded-xl border-2 border-dashed border-slate-200 dark:border-[#222] p-8 text-center text-slate-400 dark:text-slate-500 text-sm sticky top-24">
+                        <div className="bg-transparent rounded-xl border-2 border-dashed border-slate-200 dark:border-white/[0.06] p-8 text-center text-slate-400 dark:text-slate-500 text-sm sticky top-24">
                           Klicke auf die unterstrichenen Textstellen im Text links, um die Korrekturvorschläge und Erklärungen im Detail zu sehen.
                         </div>
                       )}
@@ -770,17 +798,16 @@ export default function App() {
                     {/* Mobile overlay for selected correction */}
                     <div className="lg:hidden">
                        {selectedKorrektur && (
-                          <div className="bg-white dark:bg-[#111] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden mb-6">
-                            <div className="p-3 bg-blue-50 dark:bg-[#111] border-b border-blue-100 dark:border-[#222] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase">
+                          <div className="bg-white dark:bg-[#0a0a0a] rounded-xl shadow-lg border border-blue-200 dark:border-blue-900 overflow-hidden mb-6">
+                            <div className="p-3 bg-blue-50 dark:bg-blue-950/30 border-b border-blue-100 dark:border-white/[0.06] text-xs font-bold text-blue-800 dark:text-blue-300 flex justify-between items-center uppercase">
                               <span>Korrekturvorschlag</span>
                               <button onClick={() => setSelectedKorrektur(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                                 <X size={16} />
                               </button>
                             </div>
                             <div className="p-5">
-                              <p className="text-[14px] text-slate-500 dark:text-slate-400 line-through decoration-red-400 mb-3">{selectedKorrektur.original}</p>
-                              <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-[#222]">{selectedKorrektur.vorschlag}</p>
-                              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#0a0a0a] rounded border border-slate-100 dark:border-[#222] italic">
+                              <p className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4 pb-4 border-b border-slate-100 dark:border-white/[0.06]">{selectedKorrektur.vorschlag}</p>
+                              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300 p-3 bg-[#F8FAFC] dark:bg-[#111111] rounded border border-slate-100 dark:border-white/[0.06] italic">
                                 {selectedKorrektur.erklaerung}
                               </p>
                             </div>
@@ -790,8 +817,8 @@ export default function App() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-                      <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
+                    <div className="bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm">
+                      <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
                         <span>Wichtigste Verbesserungen</span>
                         <span className="text-yellow-600 dark:text-yellow-500 font-bold bg-yellow-50 dark:bg-yellow-900/30 px-2 rounded-full">{compareResult.verbesserungen?.length || 0}</span>
                       </div>
@@ -807,8 +834,8 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-                      <div className="p-3 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
+                    <div className="bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm">
+                      <div className="p-3 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase tracking-wider">
                         <span>Stärken des Originals</span>
                         <span className="text-green-600 dark:text-green-500 font-bold bg-green-50 dark:bg-green-900/30 px-2 rounded-full">{compareResult.staerken?.length || 0}</span>
                       </div>
@@ -830,8 +857,8 @@ export default function App() {
              {/* Tab: Compare History */}
              {activeCompareTab === 'history' && (
                 <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-                  <div className="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-xl overflow-hidden shadow-sm">
-                    <div className="p-4 bg-slate-50 dark:bg-[#111] border-b border-slate-200 dark:border-[#222] flex justify-between items-center">
+                  <div className="bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm">
+                    <div className="p-4 bg-slate-50 dark:bg-[#111111] border-b border-slate-200 dark:border-white/[0.06] flex justify-between items-center">
                       <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Verlauf der manuellen Vergleiche</h2>
                       {compareHistory.length > 0 && (
                         <button 
@@ -855,12 +882,12 @@ export default function App() {
                           <p>Noch keine Vergleiche vorhanden.</p>
                         </div>
                       ) : (
-                        <div className="divide-y divide-slate-100 dark:divide-[#222]">
+                        <div className="divide-y divide-slate-100 dark:divide-white/10">
                           {compareHistory.map((h) => (
-                            <div key={h.id} className="p-6 hover:bg-slate-50 dark:hover:bg-[#222] transition-colors flex justify-between items-start">
+                            <div key={h.id} className="p-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors flex justify-between items-start">
                               <div className="flex-1 mr-4">
                                 <div className="flex items-center gap-3 justify-start mb-2">
-                                  <span className="text-xs font-semibold px-2 py-1 bg-slate-100 dark:bg-[#222] text-slate-600 dark:text-slate-300 rounded">
+                                  <span className="text-xs font-semibold px-2 py-1 bg-slate-100 dark:bg-[#1a1a1a] text-slate-600 dark:text-slate-300 rounded">
                                     Bericht
                                   </span>
                                   <span className="text-xs text-slate-400">{h.date}</span>
@@ -870,17 +897,32 @@ export default function App() {
                                   <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{h.result.korrekturen.length} Korrekturen gefunden</span>
                                 </div>
                               </div>
-                              <button 
-                                className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold rounded-lg transition shrink-0 mt-1"
-                                onClick={() => {
-                                  setCompareOriginal(h.originalText);
-                                  setCompareModified(h.modifiedText);
-                                  setCompareResult(h.result);
-                                  setActiveCompareTab('report');
-                                }}
-                              >
-                                Ansehen
-                              </button>
+                              <div className="flex gap-2 shrink-0 mt-1">
+                                <button 
+                                  className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm font-semibold rounded-lg transition"
+                                  onClick={() => {
+                                    setCompareOriginal(h.originalText);
+                                    setCompareModified(h.modifiedText);
+                                    setCompareResult(h.result);
+                                    setActiveCompareTab('report');
+                                  }}
+                                >
+                                  Ansehen
+                                </button>
+                                <button 
+                                  className="px-3 py-2 bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 rounded-lg transition"
+                                  title="Vergleich löschen"
+                                  onClick={() => {
+                                    if (window.confirm("Diesen Eintrag löschen?")) {
+                                      const newHistory = compareHistory.filter(item => item.id !== h.id);
+                                      setCompareHistory(newHistory);
+                                      localStorage.setItem('compareHistory', JSON.stringify(newHistory));
+                                    }
+                                  }}
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -905,8 +947,8 @@ function TabButton({ active, onClick, icon, label, disabled }: { active: boolean
       disabled={disabled}
       className={`px-4 py-2 flex items-center space-x-2 rounded-lg text-sm font-semibold transition-all
         ${active 
-          ? 'bg-white text-blue-700 dark:bg-[#222] dark:text-blue-300 shadow-sm' 
-          : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-[#222]'}
+          ? 'bg-white text-blue-700 dark:bg-[#1a1a1a] dark:text-blue-300 shadow-sm' 
+          : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-white/5'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
@@ -930,9 +972,9 @@ function KriteriumCard({ name, data }: { name: string, data: any }) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-5 pb-4 border-b border-slate-100 dark:border-[#222] last:border-0 last:pb-0">
+    <div className="flex flex-col sm:flex-row gap-5 pb-4 border-b border-slate-100 dark:border-white/[0.06] last:border-0 last:pb-0">
       {/* Grade Bubble */}
-      <div className={`shrink-0 w-12 h-12 rounded bg-slate-50 dark:bg-[#0a0a0a] border flex items-center justify-center font-bold text-xl ${getLetterColor(data.stufe)}`}>
+      <div className={`shrink-0 w-12 h-12 rounded bg-slate-50 dark:bg-[#111111] border flex items-center justify-center font-bold text-xl ${getLetterColor(data.stufe)}`}>
         {data.stufe}
       </div>
       
